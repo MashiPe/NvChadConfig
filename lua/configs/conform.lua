@@ -6,6 +6,7 @@ local options = {
         c_cpp = { "clang-format" }, -- Hack to force download.
         c = { "clang_format" },
         cpp = { "clang_format" },
+        python = { "isort", "black" },
     },
 
     formatters = {
@@ -18,6 +19,19 @@ local options = {
                 AccessModifierOffset: 0, \
                 IndentAccessModifiers: true, \
                 PackConstructorInitializers: Never}",
+            },
+        },
+        black = {
+            prepend_args = {
+                "--fast",
+                "--line-length",
+                "80",
+            },
+        },
+        isort = {
+            prepend_args = {
+                "--profile",
+                "black",
             },
         },
     },

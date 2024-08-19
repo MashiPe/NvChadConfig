@@ -14,6 +14,7 @@ local options = {
         "cmake",
         "cpp",
         "make",
+        "python",
     },
 
     highlight = {
