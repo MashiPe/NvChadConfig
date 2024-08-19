@@ -93,4 +93,73 @@ return {
             })
         end,
     },
+    {
+        "jay-babu/mason-nvim-dap.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "williamboman/mason.nvim",
+            "mfussenegger/nvim-dap",
+        },
+        opts = {
+            handlers = {},
+        },
+    },
+    {
+        "rcarriga/nvim-dap-ui",
+        dependencies = {
+            "mfussenegger/nvim-dap",
+            "nvim-neotest/nvim-nio",
+        },
+        event = "VeryLazy",
+        config = function()
+            local dap = require("dap")
+            local dapui = require("dapui")
+            dapui.setup()
+            dap.listeners.after.event_initialized["dapui_config"] = function()
+                dapui.open()
+            end
+            dap.listeners.before.event_terminated["dapui_config"] = function()
+                dapui.close()
+            end
+            dap.listeners.before.event_exited["dapui_config"] = function()
+                dapui.close()
+            end
+        end,
+    },
+    {
+        "mfussenegger/nvim-dap",
+        config = function(_, _)
+            -- require("configs.dap-mappings").("dap")
+        end,
+    },
+    {
+        "mfussenegger/nvim-dap-python",
+        ft = "python",
+        dependencies = {
+            "mfussenegger/nvim-dap",
+            "rcarriga/nvim-dap-ui",
+        },
+        config = function(_, opts)
+            local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+            require("dap-python").setup(path)
+            require("dap-python").resolve_python = function()
+                local current_dir = vim.fn.getcwd()
+                local parent_dir = vim.fn.fnamemodify(current_dir, ":h")
+                local current_venv = current_dir .. "/venv"
+                local parent_venv = parent_dir .. "/venv"
+                local python_dir = "/usr"
+
+                if vim.fn.isdirectory(current_venv) ~= 0 then
+                    python_dir = current_venv
+                end
+
+                if vim.fn.isdirectory(parent_venv) ~= 0 then
+                    python_dir = parent_venv
+                end
+
+                return python_dir .. "/bin/python"
+            end
+            -- require("configs.dap-mappings").load_mappings("dap_python")
+        end,
+    },
 }
