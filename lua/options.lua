@@ -1,4 +1,4 @@
-require "nvchad.options"
+require("nvchad.options")
 
 -- add yours here!
 
@@ -8,4 +8,12 @@ local o = vim.o
 vim.opt.relativenumber = true
 o.shiftwidth = 4
 o.tabstop = 4
-o.softtabstop= 4
+o.softtabstop = 4
+
+vim.o.updatetime = 200
+vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+    group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
+    callback = function()
+        vim.diagnostic.open_float(nil, { focus = false })
+    end,
+})

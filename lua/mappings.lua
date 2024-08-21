@@ -36,3 +36,5 @@ map("n", "<leader>gsy", "<cmd>GoTagAdd yaml<CR>", { desc = "Add YAML struct tags
 
 -- DAP Python mappings
 map("n", "<F5>", "<cmd>lua require('dap').continue()<CR>", { desc = "Continue debugging for Python" })
+
+map("n", "<leader>ofb", ":Telescope file_browser<CR>")
