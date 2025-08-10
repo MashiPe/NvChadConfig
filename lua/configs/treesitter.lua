@@ -18,13 +18,13 @@ local options = {
         "angular",
         "scss",
         "typescript",
+        "vue",
     },
 
     highlight = {
         enable = true,
         use_languagetree = true,
     },
-
     indent = { enable = true },
 }
 
@@ -37,3 +37,5 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
         vim.treesitter.start(nil, "angular")
     end,
 })
+
+require("nvim-treesitter.configs").setup({})

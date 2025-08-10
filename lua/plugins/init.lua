@@ -1,11 +1,11 @@
 return {
-  {
-    "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
-    opts = require "configs.conform",
-  },
+    {
+        "stevearc/conform.nvim",
+        event = "BufWritePre", -- uncomment for format on save
+        opts = require("configs.conform"),
+    },
 
-  -- These are some examples, uncomment them if you want to see them work!
+    -- These are some examples, uncomment them if you want to see them work!
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
@@ -15,8 +15,8 @@ return {
         end,
     },
 
-  -- test new blink
-  -- { import = "nvchad.blink.lazyspec" },
+    -- test new blink
+    -- { import = "nvchad.blink.lazyspec" },
 
     {
         "nvim-treesitter/nvim-treesitter",
@@ -24,15 +24,25 @@ return {
         config = function()
             require("configs.treesitter")
         end,
-        -- opts = {
-        --     ensure_installed = {
-        --         "vim",
-        --         "lua",
-        --         "vimdoc",
-        --         "html",
-        --         "css",
-        --     },
-        -- },
+    },
+    {
+        "JoosepAlviste/nvim-ts-context-commentstring",
+        lazy = false,
+    },
+    {
+        "windwp/nvim-ts-autotag",
+        event = "InsertEnter",
+        config = function()
+            require("nvim-ts-autotag").setup({
+                opts = {
+                    -- Defaults
+                    enable_close = true, -- Auto close tags
+                    enable_rename = true, -- Auto rename pairs of tags
+                    enable_close_on_slash = false, -- Auto close on trailing </
+                },
+            })
+        end,
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
     },
     {
         "mfussenegger/nvim-lint",
@@ -49,36 +59,36 @@ return {
             require("configs.mason-lint")
         end,
     },
-    {
-        "nvim-java/nvim-java",
-        lazy = false,
-        dependencies = {
-            "nvim-java/lua-async-await",
-            "nvim-java/nvim-java-core",
-            "nvim-java/nvim-java-test",
-            "nvim-java/nvim-java-dap",
-            "MunifTanjim/nui.nvim",
-            "neovim/nvim-lspconfig",
-            "mfussenegger/nvim-dap",
-            {
-                "williamboman/mason.nvim",
-                opts = {
-                    registries = {
-                        "github:nvim-java/mason-registry",
-                        "github:mason-org/mason-registry",
-                    },
-                },
-            },
-        },
-        config = function()
-            require("java").setup({})
-            require("lspconfig").jdtls.setup({
-                on_attach = require("nvchad.configs.lspconfig").on_attach,
-                capabilities = require("nvchad.configs.lspconfig").capabilities,
-                filetypes = { "java" },
-            })
-        end,
-    },
+    -- {
+    --     "nvim-java/nvim-java",
+    --     lazy = false,
+    --     dependencies = {
+    --         "nvim-java/lua-async-await",
+    --         "nvim-java/nvim-java-core",
+    --         "nvim-java/nvim-java-test",
+    --         "nvim-java/nvim-java-dap",
+    --         "MunifTanjim/nui.nvim",
+    --         "neovim/nvim-lspconfig",
+    --         "mfussenegger/nvim-dap",
+    --         {
+    --             "williamboman/mason.nvim",
+    --             opts = {
+    --                 registries = {
+    --                     "github:nvim-java/mason-registry",
+    --                     "github:mason-org/mason-registry",
+    --                 },
+    --             },
+    --         },
+    --     },
+    --     config = function()
+    --         require("java").setup({})
+    --         require("lspconfig").jdtls.setup({
+    --             on_attach = require("nvchad.configs.lspconfig").on_attach,
+    --             capabilities = require("nvchad.configs.lspconfig").capabilities,
+    --             filetypes = { "java" },
+    --         })
+    --     end,
+    -- },
     {
         "jay-babu/mason-nvim-dap.nvim",
         event = "VeryLazy",
@@ -117,18 +127,18 @@ return {
         config = function(_, _)
             -- require("configs.dap-mappings").("dap")
         end,
-    }, 
-    {
-    "leoluz/nvim-dap-go",
-    ft = "go",
-    dependencies = {
-      "mfussenegger/nvim-dap",
-      "rcarriga/nvim-dap-ui",
     },
-    config = function(_, opts)
-      require("dap-go").setup(opts)
-    end,
-  },
+    {
+        "leoluz/nvim-dap-go",
+        ft = "go",
+        dependencies = {
+            "mfussenegger/nvim-dap",
+            "rcarriga/nvim-dap-ui",
+        },
+        config = function(_, opts)
+            require("dap-go").setup(opts)
+        end,
+    },
     {
         "mfussenegger/nvim-dap-python",
         ft = "python",
@@ -182,6 +192,15 @@ return {
     {
         "nvim-tree/nvim-tree.lua",
         lazy = false,
+        opts = {
+            git = {
+                ignore = false, -- Show files listed in .gitignore (set to false to show .env)
+            },
+            filters = {
+                dotfiles = false, -- Show dotfiles (like .env)
+                custom = {}, -- No additional custom filters
+            },
+        },
         config = function()
             local HEIGHT_RATIO = 0.8 -- You can change this
             local WIDTH_RATIO = 0.5 -- You can change this too
@@ -215,15 +234,14 @@ return {
             })
         end,
     },
-  {
-    "olexsmir/gopher.nvim",
-    ft = "go",
-    config = function(_, opts)
-      require("gopher").setup(opts)
-    end,
-    build = function()
-      vim.cmd [[silent! GoInstallDeps]]
-    end,
-  },
+    {
+        "olexsmir/gopher.nvim",
+        ft = "go",
+        config = function(_, opts)
+            require("gopher").setup(opts)
+        end,
+        build = function()
+            vim.cmd([[silent! GoInstallDeps]])
+        end,
+    },
 }
-
